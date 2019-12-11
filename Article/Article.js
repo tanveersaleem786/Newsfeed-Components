@@ -85,6 +85,16 @@ const data = [
     thirdParagraph: `Hodor hodor - hodor... Hodor hodor hodor hodor. Hodor. Hodor! Hodor hodor, hodor hodor hodor hodor hodor; hodor hodor? Hodor!
           Hodor hodor, HODOR hodor, hodor hodor?! Hodor! Hodor hodor, HODOR hodor, hodor hodor, hodor, hodor hodor. Hodor, hodor.
           Hodor. Hodor, hodor, hodor. Hodor hodor... Hodor hodor hodor?! Hodor, hodor... Hodor hodor HODOR hodor, hodor hodor. Hodor.`
+  },
+
+  {
+    title: 'Additional Title',
+    date: 'Aug 1st, 2019',
+    firstParagraph: `Additional Paragraph 1`,
+
+    secondParagraph: `Additional Paragraph 2`,
+
+    thirdParagraph: `Additional Paragraph 3`
   }
 ];
 
@@ -112,3 +122,59 @@ const data = [
   Step 5: Add a new article to the array. Make sure it is in the same format as the others. Refresh the page to see the new article.
 
 */
+
+function createArticle(articleObj)
+{
+  
+  articleObj.forEach( (articleData) => {
+
+    const article   = document.createElement('div');
+    const title     = document.createElement('h2');
+    const artDate   = document.createElement('p');
+    const expButton = document.createElement('span');
+
+    const p1   = document.createElement('p');
+    const p2   = document.createElement('p');
+    const p3   = document.createElement('p');
+
+    const open = '\u25bc';
+    const close = '\u25b2';
+
+
+    article.appendChild(title);
+    article.appendChild(artDate);
+    article.appendChild(expButton);
+    artDate.after(p1);
+    p1.after(p2);
+    p2.after(p3);
+
+    article.classList.add('article');
+    artDate.classList.add('date');
+    expButton.classList.add('expandButton');
+
+   
+    title.textContent   = articleData.title;
+    artDate.textContent = articleData.date;
+    p1.textContent      = articleData.firstParagraph;
+    p2.textContent      = articleData.secondParagraph;
+    p3.textContent      = articleData.thirdParagraph;
+    expButton.textContent      = open;
+
+    expButton.addEventListener('click', (event) => {
+      article.classList.toggle('article-open');      
+      if(expButton.textContent === open)
+          expButton.textContent = close;
+      else
+          expButton.textContent = open;
+    });
+    
+    const articlesDiv = document.querySelector('.articles');
+    articlesDiv.appendChild(article);    
+
+  });
+
+   
+}
+
+createArticle(data);
+
