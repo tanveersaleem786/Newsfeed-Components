@@ -109,6 +109,8 @@ const data = [
     <span class='expandButton'></span>
   </div>
 
+  <span><a href="readArt(1)" style="float:right">Read</a></span>
+
   Hint: You will need to use createElement more than once here!
 
   Your function should take either an object as it's one argument, or 5 separate arguments mapping to each piece of the data object above.
@@ -125,12 +127,14 @@ const data = [
 
 function createArticle(articleObj)
 {
-  
+  let counter = 1; 
   articleObj.forEach( (articleData) => {
 
     const article   = document.createElement('div');
     const title     = document.createElement('h2');
     const artDate   = document.createElement('p');
+    const readSpan = document.createElement('span');
+    const readLnk = document.createElement('a');
     const expButton = document.createElement('span');
 
     const p1   = document.createElement('p');
@@ -142,15 +146,16 @@ function createArticle(articleObj)
 
 
     article.appendChild(title);
-    article.appendChild(artDate);
+    article.appendChild(artDate);   
     article.appendChild(expButton);
     artDate.after(p1);
     p1.after(p2);
     p2.after(p3);
-
+    
+    
     article.classList.add('article');
     artDate.classList.add('date');
-    expButton.classList.add('expandButton');
+    expButton.classList.add('expandButton');    
 
    
     title.textContent   = articleData.title;
@@ -160,21 +165,48 @@ function createArticle(articleObj)
     p3.textContent      = articleData.thirdParagraph;
     expButton.textContent      = open;
 
+    artDate.appendChild(readSpan);
+    readSpan.appendChild(readLnk);    
+    readLnk.setAttribute('onClick','readArticle('+counter+')');
+    //readLnk.setAttribute('id','read_'+counter);
+    article.setAttribute('id','article_'+counter);
+    readLnk.textContent = 'Read';
+    readLnk.style.float = 'right';
+    readLnk.style.color = 'blue';
+    readLnk.style.cursor = 'pointer';
+    readLnk.style.textDecoration = 'underline';  
+    readLnk.style.display = 'none';  
+    
+
     expButton.addEventListener('click', (event) => {
-      article.classList.toggle('article-open');      
-      if(expButton.textContent === open)
-          expButton.textContent = close;
-      else
-          expButton.textContent = open;
+        article.classList.toggle('article-open');      
+        if(expButton.textContent === open) {
+            expButton.textContent = close;
+            readLnk.style.display = 'block';
+        }    
+        else {
+            expButton.textContent = open;
+            readLnk.style.display = 'none';
+        }
     });
     
     const articlesDiv = document.querySelector('.articles');
     articlesDiv.appendChild(article);    
+    counter++;
 
   });
 
    
 }
+
+
+
+function readArticle(id)
+{   
+   //$('#article_'+id).hide();   
+   $( '#article_'+id ).fadeOut(400, function() { $(this).remove(); });
+}
+
 
 createArticle(data);
 
